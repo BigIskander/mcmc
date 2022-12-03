@@ -1,4 +1,5 @@
 #Metropolis-Hastings MCMC algorithm implementation
+#https://bigiskander.github.io/mcmc.html
 #author: Sultanov Iskander
 # BigIskander@gmail.com
 
