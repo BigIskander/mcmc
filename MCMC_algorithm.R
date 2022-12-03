@@ -39,6 +39,15 @@ propose <- function(b, st)
 #h, L - accuracy variables from previous data estimation
 mcmc <- function(iter, X, Y, b_TH, alpha, beta, h, L)
 {
+  #preliminary estimation 1
+  B <- h*L
+  C <- matrix(0, length(b_TH), 1)
+  for(i in 1:length(b_TH))
+  {
+    C[i] <- B[i,i]-B[i,-i]%*%solve(B[-i,-i],B[-i,i])
+  }
+  stdp <- 1/sqrt(C)
+  
   #preliminary estimation 2
   iter <- iter*1.1
   b <- b_TH
@@ -47,15 +56,6 @@ mcmc <- function(iter, X, Y, b_TH, alpha, beta, h, L)
   sig_sq <- as.numeric(var(resid))
   output=matrix(0,ncol=ncol(X)+1,nrow=iter)	
   output[1,]=c(sig_sq,b)
-  
-  #preliminary estimation 1
-  B <- h*L
-  C <- matrix(0, length(b), 1)
-  for(i in 1:length(b))
-  {
-    C[i] <- B[i,i]-B[i,-i]%*%solve(B[-i,-i],B[-i,i])
-  }
-  stdp <- 1/sqrt(C)
   
   prevp <- aposterior(b, sig_sq, b_TH, alpha, beta, stdp, Y, pY)
   
